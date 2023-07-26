@@ -25,14 +25,21 @@ export default function Home() {
   };
 
   const filteredTasks = useMemo(() => {
-    if (filter === "Abertas") {
-      return tasks.filter(task => !task.completed);
-    } else if (filter === "Concluídas") {
-      return tasks.filter(task => task.completed);
-    } else {
-      return tasks;
+    const filteredByFilter =
+      filter === "Abertas"
+        ? tasks.filter(task => !task.completed)
+        : filter === "Concluídas"
+        ? tasks.filter(task => task.completed)
+        : tasks;
+
+    if (searchValue.trim()) {
+      return filteredByFilter.filter(task =>
+        task.text.toLowerCase().includes(searchValue.toLowerCase()),
+      );
     }
-  }, [filter, tasks]);
+
+    return filteredByFilter;
+  }, [filter, tasks, searchValue]);
 
   const handleTaskInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -74,54 +81,57 @@ export default function Home() {
   const completedCount = tasks.filter(task => task.completed).length;
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-24 bg-[#0D0D0D]">
-      <div className="flex justify-start absolute top-0 left-0 p-12">
-        <Image
-          src={Logo}
-          alt=""
-          width={161}
-          height={24}
-          quality={100}
-          className="object-contain"
-        />
-      </div>
-      <div className="flex flex-col justify-between absolute left-0 p-12 text-[#FBFBFF] ">
-        <h2 className="text-1xl">Fala futuro Ubuntu,</h2>
-        <h1 className="text-2xl mt-2 font-bold">
-          Produtividade é o nome do jogo!
-        </h1>
-        <div className=" flex flex-row">
-          <h1 className="font-bold mt-2 text-3xl text-[#9AFF89]">#</h1>
-          <h1 className="font-bold mt-2 text-3xl">Partiu</h1>
+    <main className="flex flex-col min-h-screen p-8 bg-[#0D0D0D]">
+      <div className="flex justify-between text-[#FBFBFF] ">
+        <div className="w-full">
+          <div>
+            <Image
+              src={Logo}
+              alt=""
+              width={161}
+              height={24}
+              quality={100}
+              className="object-contain"
+            />
+          </div>
+
+          <h2 className="text-1xl mt-28">Fala futuro Ubuntu,</h2>
+          <h1 className="text-2xl mt-2 font-bold">
+            Produtividade é o nome do jogo!
+          </h1>
+          <div className=" flex flex-row mt-2 items-center">
+            <h1 className="font-bold mt-2 text-3xl text-[#9AFF89]">#</h1>
+            <h1 className="font-bold mt-2 text-3x ml-1">Partiu</h1>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-4 justify-end">
+          <Options
+            text="Todos"
+            number={tasks.length}
+            onClick={() => handleFilterTasks("Todos")}
+            selected={filter === "Todos"}
+            disabled={filter === "Todos"}
+          />
+          <Options
+            text="Abertas"
+            number={tasks.length - completedCount}
+            onClick={() => handleFilterTasks("Abertas")}
+            selected={filter === "Abertas"}
+            disabled={filter === "Abertas"}
+          />
+          <Options
+            text="Concluídas"
+            number={completedCount}
+            onClick={() => handleFilterTasks("Concluídas")}
+            selected={filter === "Concluídas"}
+            disabled={filter === "Concluídas"}
+          />
         </div>
       </div>
-      <div className="flex flex-row space-x-4 mt-7 p-12 ml-12">
-        <Options
-          text="Todos"
-          number={tasks.length}
-          onClick={() => handleFilterTasks("Todos")}
-          selected={filter === "Todos"}
-          // disabled={filter === "Todos"}
-        />
-        <Options
-          text="Abertas"
-          number={tasks.length - completedCount}
-          onClick={() => handleFilterTasks("Abertas")}
-          selected={filter === "Abertas"}
-          // disabled={filter === "Abertas"}
-        />
-        <Options
-          text="Concluídas"
-          number={completedCount}
-          onClick={() => handleFilterTasks("Concluídas")}
-          selected={filter === "Concluídas"}
-          // disabled={filter === "Concluídas"}
-        />
-      </div>
 
-      <div className="flex flex-row justify-between items-center gap-4 p-12">
+      <div className="flex flex-row justify-between items-center gap-4 mt-6">
         <input
-          className="border border-[#373737] rounded-md p-2 focus:outline-none focus:border-[#9AFF89] bg-[#181818] w-[592px] text-white"
+          className="border border-[#373737] rounded-md p-2 focus:outline-none focus:border-[#9AFF89] bg-[#181818] w-full text-white"
           type="text"
           value={newTaskText}
           onChange={handleTaskInputChange}
@@ -135,11 +145,15 @@ export default function Home() {
         />
 
         <div className="mr-auto">
-          <InputSearch onChange={handleSearchChange} placeholder="Pesquisar" />
+          <InputSearch
+            onChange={handleSearchChange}
+            placeholder="Pesquisar"
+            value={searchValue}
+          />
         </div>
       </div>
 
-      <div className="mx-4 space-y-4">
+      <div>
         {filteredTasks.length > 0 ? (
           filteredTasks.map(task => (
             <Task
@@ -151,7 +165,7 @@ export default function Home() {
             />
           ))
         ) : (
-          <div className="flex justify-center items-center h-96">
+          <div className="flex justify-center items-center h-96 mt-12">
             <Image alt="" src={Zerou} />
           </div>
         )}

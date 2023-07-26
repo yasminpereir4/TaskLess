@@ -15,8 +15,8 @@ export const Task: React.FC<TaskProps> = ({ text, onClick, completed, onToggle }
   };
 
   return (
-    <div className="flex flex-row justify-start items-center border border-[#373737] rounded-md p-5 focus:outline-none focus:border-[#9AFF89] bg-[#181818] w-screen text-white">
-      <input type="checkbox" className="rounded-full bg-[#9AFF89] w-25 ml-2" checked={completed} onChange={onToggle}  />
+    <div className="flex flex-row justify-start items-center border border-[#373737] rounded-md p-5 mt-3 focus:outline-none focus:border-[#9AFF89] bg-[#181818]  text-white">
+      <input type="checkbox" className="rounded-full bg-[#9AFF89] w-25" checked={completed} onChange={onToggle}  />
       <span className="text-[#FBFBFF] ml-2">{text}</span>
       <Image
         src={Lixeira}
