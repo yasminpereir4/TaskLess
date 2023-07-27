@@ -81,7 +81,7 @@ export default function Home() {
   const completedCount = tasks.filter(task => task.completed).length;
 
   return (
-    <main className="flex flex-col min-h-screen p-8 bg-[#0D0D0D]">
+    <main className="flex flex-col min-h-screen p-24 bg-[#0D0D0D]">
       <div className="flex justify-between text-[#FBFBFF] ">
         <div className="w-full">
           <div>
@@ -96,42 +96,44 @@ export default function Home() {
           </div>
 
           <h2 className="text-1xl mt-28">Fala futuro Ubuntu,</h2>
-          <h1 className="text-2xl mt-2 font-bold">
+          <h1 className="text-2xl font-bold">
             Produtividade é o nome do jogo!
           </h1>
-          <div className=" flex flex-row mt-2 items-center">
-            <h1 className="font-bold mt-2 text-3xl text-[#9AFF89]">#</h1>
-            <h1 className="font-bold mt-2 text-3x ml-1">Partiu</h1>
+          <div className="flex flex-row items-center">
+            <h1 className="font-bold text-3xl text-[#9AFF89]">#</h1>
+            <h1 className="font-bold text-3x ml-1">Partiu</h1>
           </div>
-        </div>
-        <div className="flex flex-row space-x-4 justify-end">
-          <Options
-            text="Todos"
-            number={tasks.length}
-            onClick={() => handleFilterTasks("Todos")}
-            selected={filter === "Todos"}
-            disabled={filter === "Todos"}
-          />
-          <Options
-            text="Abertas"
-            number={tasks.length - completedCount}
-            onClick={() => handleFilterTasks("Abertas")}
-            selected={filter === "Abertas"}
-            disabled={filter === "Abertas"}
-          />
-          <Options
-            text="Concluídas"
-            number={completedCount}
-            onClick={() => handleFilterTasks("Concluídas")}
-            selected={filter === "Concluídas"}
-            disabled={filter === "Concluídas"}
-          />
+
+          <div className="flex flex-row justify-end">
+            <Options
+              text="Todos"
+              number={tasks.length}
+              onClick={() => handleFilterTasks("Todos")}
+              selected={filter === "Todos"}
+              disabled={filter === "Todos"}
+            />
+            <Options
+              text="Abertas"
+              number={tasks.length - completedCount}
+              onClick={() => handleFilterTasks("Abertas")}
+              selected={filter === "Abertas"}
+              disabled={filter === "Abertas"}
+            />
+            <Options
+              text="Concluídas"
+              number={completedCount}
+              onClick={() => handleFilterTasks("Concluídas")}
+              selected={filter === "Concluídas"}
+              disabled={filter === "Concluídas"}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-row justify-between items-center gap-4 mt-6">
+      <div className="flex flex-row mt-6 justify-between">
+        <div className="flex flex-row gap-4">
         <input
-          className="border border-[#373737] rounded-md p-2 focus:outline-none focus:border-[#9AFF89] bg-[#181818] w-full text-white"
+          className="border border-[#373737] rounded-md p-2 focus:outline-none focus:border-[#9AFF89] bg-[#181818] w-[590px] text-white"
           type="text"
           value={newTaskText}
           onChange={handleTaskInputChange}
@@ -140,17 +142,15 @@ export default function Home() {
 
         <ButtonNewTask
           onClick={handleCreateTask}
-          text=" Criar nova tarefa"
+          text="Criar nova tarefa"
           children
         />
-
-        <div className="mr-auto">
-          <InputSearch
-            onChange={handleSearchChange}
-            placeholder="Pesquisar"
-            value={searchValue}
-          />
         </div>
+        <InputSearch
+          onChange={handleSearchChange}
+          placeholder="Pesquisar"
+          value={searchValue}
+        />
       </div>
 
       <div>
